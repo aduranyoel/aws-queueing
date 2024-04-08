@@ -5,7 +5,7 @@ export const handler: Handler = async (event: APIGatewayProxyEvent, context): Pr
     return {
         body: JSON.stringify({ success: true }),
         headers: {
-            "Content-Type": "application/json"
+            'content-type': 'application/json'
         },
         statusCode: 200,
     }
