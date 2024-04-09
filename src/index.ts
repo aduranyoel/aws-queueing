@@ -1,15 +1,25 @@
-import {APIGatewayProxyEvent, APIGatewayProxyResultV2, Handler} from 'aws-lambda';
-import {sendSqsMessage} from "./utils/sendSqsMessage";
+import { ScheduledEvent, Handler, APIGatewayProxyResult } from 'aws-lambda';
+import { sendSqsMessage } from './utils/sendSqsMessage';
 
-export const handler: Handler = async (event: APIGatewayProxyEvent, context): Promise<APIGatewayProxyResultV2> => {
+export const handler: Handler = async (event: ScheduledEvent): Promise<APIGatewayProxyResult> => {
+  try {
     console.log('event', event);
-    console.log('context', context);
-    await sendSqsMessage({ content: 'it works!', to: 'ee@ss.com' })
+    await sendSqsMessage({ content: 'Next due date:', to: 'aduran.yoel+to@gmail.com' });
     return {
-        body: JSON.stringify({ success: true }),
-        headers: {
-            'content-type': 'application/json'
-        },
-        statusCode: 200,
-    }
+      body: JSON.stringify({ success: true }),
+      headers: {
+        'content-type': 'application/json',
+      },
+      statusCode: 200,
+    };
+  } catch (error) {
+    console.error('ERROR:', error);
+    return {
+      body: JSON.stringify({ error }),
+      headers: {
+        'content-type': 'application/json',
+      },
+      statusCode: 500,
+    };
+  }
 };
